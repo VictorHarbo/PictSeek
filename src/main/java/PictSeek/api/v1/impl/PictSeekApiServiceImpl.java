@@ -96,7 +96,7 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
       * @implNote return will always produce a HTTP 200 code. Throw ServiceException if you need to return other codes
      */
     @Override
-    public String ingestIcloud(String user, String password, String ingestType) throws ServiceException {
+    public String ingestIcloud() throws ServiceException {
         try {
             log.info("Starting ingester");
             String result = IcloudIngester.ingest();
