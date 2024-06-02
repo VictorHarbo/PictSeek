@@ -1,0 +1,4 @@
+icloudIngester:
+  user: username
+  password: password
+  downloadDirectory: /tmp/images

@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: PictSeek Archive
+  description: This is the API for a home imageserver.
+  contact:
+    name: Victor Harbo Johnston
+    email: vharjoh@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  #  /api must match servlet-mapping in web.xml
+  - url: 'http://localhost:9071/PictSeek/v1/'
+    description: 'Version 1'
+
+paths:
+  /ingest/icloud:
+    get:
+      tags:
+        - PictSeek
+      summary: Ingest images from iCloud
+      # TODO: Better description
+      description: Ingest images from iCloud for a specific user.
+      operationId: ingestIcloud
+      parameters:
+        - in: query
+          name: user
+          schema:
+            type: string
+            example: username
+        - in: query
+          name: password
+          schema:
+            type: string
+            example: password
+        - in: query
+          name: ingestType
+          schema:
+            type: string
+            example: full
+      responses:
+        '200':
+          description: Ingest from iCloud was a success.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+  /enrichment/contentDescription:
+    get:
+      tags:
+        - PictSeek
+      summary: Create content description for images.
+      description: Update images without content descriptions with AI generated descriptions.
+      operationId: createContentDescriptions
+      responses:
+        '200':
+          description: Created content descriptions for all images without descriptions already.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+  /solr/index:
+    get:
+      tags:
+        - PictSeek
+      summary: Add metadata documents to solr.
+      description: Update solr index with either new records or reindexs all records.
+      operationId: solrIndex
+      parameters:
+        - in: query
+          name: fromTime
+          schema:
+            type: number
+            format: int64
+            example: 0
+      responses:
+        '200':
+          description: Successfully indexed records.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Successfully indexed records.
+
+  /ping:
+    get:
+      tags:
+        - Service
+      summary: Ping the server
+      description: Returns a pong message
+      operationId: ping
+      responses:
+        '200':
+          description: A pong response
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: pong

@@ -1,0 +1,29 @@
+<included>
+    <contextName>PictSeek</contextName>
+
+    <property name="LOGFILE" value="${catalina.home}/logs/PictSeek.log" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGFILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOGFILE}.%d{yyyy-MM-dd}</fileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+      <appender-ref ref="FILE" />
+    </root>
+    <logger name="PictSeek" level="DEBUG" />
+    <logger name="org.apache.cxf" level="WARN" />
+ 
+</included>
+
