@@ -16,7 +16,7 @@ public class TestIcloudIngester {
     }
 
     //@Test
-    public void testIngester() throws IOException {
+    public void testIngester() throws IOException, InterruptedException {
         IcloudIngester.ingest();
     }
 }

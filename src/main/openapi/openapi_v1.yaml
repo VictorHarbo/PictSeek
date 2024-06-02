@@ -23,22 +23,6 @@ paths:
       # TODO: Better description
       description: Ingest images from iCloud for a specific user.
       operationId: ingestIcloud
-      parameters:
-        - in: query
-          name: user
-          schema:
-            type: string
-            example: username
-        - in: query
-          name: password
-          schema:
-            type: string
-            example: password
-        - in: query
-          name: ingestType
-          schema:
-            type: string
-            example: full
       responses:
         '200':
           description: Ingest from iCloud was a success.
