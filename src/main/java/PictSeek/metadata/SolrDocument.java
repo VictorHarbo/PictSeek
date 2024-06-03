@@ -2,10 +2,10 @@ package PictSeek.metadata;
 
 public class SolrDocument {
     private String id;
-    private String imageHeight;
-    private String imageLength;
+    private Integer imageHeight;
+    private Integer imageLength;
 
-    public SolrDocument(String id, String imageHeight, String imageLength) {
+    public SolrDocument(String id, Integer imageHeight, Integer imageLength) {
         this.id = id;
         this.imageHeight = imageHeight;
         this.imageLength = imageLength;
@@ -19,19 +19,19 @@ public class SolrDocument {
         this.id = id;
     }
 
-    public String getImageHeight() {
+    public Integer getImageHeight() {
         return imageHeight;
     }
 
-    public void setImageHeight(String imageHeight) {
+    public void setImageHeight(Integer imageHeight) {
         this.imageHeight = imageHeight;
     }
 
-    public String getImageLength() {
+    public Integer getImageLength() {
         return imageLength;
     }
 
-    public void setImageLength(String imageLength) {
+    public void setImageLength(Integer imageLength) {
         this.imageLength = imageLength;
     }
 }
