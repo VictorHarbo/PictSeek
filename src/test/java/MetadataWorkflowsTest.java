@@ -1,20 +1,11 @@
 import PictSeek.metadata.ExifHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestMetadataWorkflows {
-
-    @Test
-    public void test() throws IOException {
-        System.out.println("PNG orignal");
-        ExifHandler.metadataExtraction("/Users/vhol/Pictures/testTiffs/IMG_0749.tiff");
-
-        System.out.println("HEIC original");
-        ExifHandler.metadataExtraction("/Users/vhol/Pictures/testTiffs/IMG_0748.tiff");
-    }
+public class MetadataWorkflowsTest {
 
     @Test
     public void testGetWidth() throws IOException {
