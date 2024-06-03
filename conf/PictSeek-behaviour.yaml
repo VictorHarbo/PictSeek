@@ -2,3 +2,4 @@ icloudIngester:
   user: username
   password: password
   downloadDirectory: /tmp/images
+  tiffDirectory: /tmp/images/tiff

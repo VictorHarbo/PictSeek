@@ -38,4 +38,8 @@ public class ServiceConfig {
     public static String getIcloudDownloadDirectory(){
         return (String) serviceConfig.get("icloudIngester.downloadDirectory");
     }
+
+    public static String getTiffDirectory(){
+        return (String) serviceConfig.get("icloudIngester.tiffDirectory");
+    }
 }
