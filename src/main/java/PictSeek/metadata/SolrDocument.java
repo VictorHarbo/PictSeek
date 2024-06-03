@@ -1,6 +1,13 @@
 package PictSeek.metadata;
 
+import java.util.UUID;
+
+/**
+ * This class represents the JSON solr documents indexed into solr.
+ */
 public class SolrDocument {
+
+
     private String id;
     private Integer imageHeight;
     private Integer imageLength;
@@ -33,5 +40,10 @@ public class SolrDocument {
 
     public void setImageLength(Integer imageLength) {
         this.imageLength = imageLength;
+    }
+
+    public static String createId(){
+        UUID id = UUID.randomUUID();
+        return id.toString();
     }
 }

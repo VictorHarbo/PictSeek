@@ -4,23 +4,20 @@ import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffField;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ExifHandler {
+    private static Logger log = LoggerFactory.getLogger(ExifHandler.class);
 
     public static void metadataExtraction(String imagePath) throws IOException {
 
         ImageMetadata metadata = getImageMetadata(imagePath);
 
-        if (metadata instanceof TiffImageMetadata tiffMetadata){
-            for (TiffField field : tiffMetadata.getAllFields()){
-
-                System.out.println(field.getTagName() + ": " + field.getValueDescription());
-
-            }
-        }
+        log.info(metadata.toString());
     }
     public static int getImageWidth(String imagePath) throws IOException {
         return getFieldValueAsInt(imagePath, "ImageWidth" );
