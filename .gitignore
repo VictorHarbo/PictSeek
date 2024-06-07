@@ -42,3 +42,4 @@ conf/PictSeek-local.yaml
 /.idea/
 /.openapi-generator/
 /gradle/
+/.openapi-generator/
