@@ -30,7 +30,8 @@ public class ExifHandler {
     private static int getFieldValueAsInt(String imagePath, String fieldName) throws IOException {
         ImageMetadata metadata = getImageMetadata(imagePath);
 
-        if (metadata instanceof TiffImageMetadata tiffMetadata){
+        if (metadata instanceof TiffImageMetadata){
+            TiffImageMetadata tiffMetadata = (TiffImageMetadata) metadata;
             for (TiffField field : tiffMetadata.getAllFields()){
                 if (field.getTagName().equals(fieldName)){
                     return field.getIntValue();
