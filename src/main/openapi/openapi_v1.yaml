@@ -11,7 +11,7 @@ info:
   version: 1.0.0
 servers:
   #  /api must match servlet-mapping in web.xml
-  - url: 'http://localhost:9071/PictSeek/v1/'
+  - url: 'http://localhost:8080/PictSeek/v1/'
     description: 'Version 1'
 
 paths:
