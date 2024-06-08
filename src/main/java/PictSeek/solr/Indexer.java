@@ -46,7 +46,7 @@ public class Indexer {
 
         final SolrInputDocument solrDoc = new SolrInputDocument();
         solrDoc.addField("id", doc.getId());
-        solrDoc.addField("imageHeight", doc.getImageWidth());
+        solrDoc.addField("imageWidth", doc.getImageWidth());
         solrDoc.addField("imageLength", doc.getImageLength());
 
         try {
@@ -54,7 +54,7 @@ public class Indexer {
             // Indexed documents must be committed
             client.commit(COLLECTION);
         } catch (SolrServerException | IOException e) {
-            log.warn("Error occurred when adding and committing solr document to solr.");
+            log.warn("Error occurred when adding and committing solr document to solr. Client URL is: '{}'", client.getContext().toString());
             throw new RuntimeException(e);
         }
     }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import PictSeek.ingest.ImageIngester;
+import PictSeek.solr.Indexer;
 import dk.kb.util.webservice.exception.ServiceException;
 
 import org.slf4j.Logger;
@@ -107,13 +108,9 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
      */
     @Override
     public String solrIndex(BigDecimal fromTime) throws ServiceException {
-        // TODO: Implement...
-        log.info("testing solr endpoint");
-    
-        
-        try { 
-            String response = "result";
-        return response;
+        try {
+            Indexer.indexPhotosFromDirectory();
+        return "Success";
         } catch (Exception e){
             throw handleException(e);
         }

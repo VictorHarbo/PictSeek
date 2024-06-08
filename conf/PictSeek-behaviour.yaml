@@ -11,3 +11,5 @@ icloudDownloader:
 solr:
   url: url.to.solr
   collection: collectionName
+
+imageserver: IIPImage.imageserver
