@@ -8,3 +8,6 @@ icloudDownloader:
   downloadDirectory: /tmp/images
   dockerImage: true
 
+solr:
+  url: url.to.solr
+  collection: collectionName

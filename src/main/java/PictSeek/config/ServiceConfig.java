@@ -34,4 +34,12 @@ public class ServiceConfig {
     public static String getIngestTo(){
         return (String) serviceConfig.get("ingest.to");
     }
+
+    public static String getSolrUrl(){
+        return (String) serviceConfig.get("solr.url");
+    }
+
+    public static String getSolrCollection(){
+        return (String) serviceConfig.get("solr.collection");
+    }
 }
