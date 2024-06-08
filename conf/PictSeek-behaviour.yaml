@@ -2,8 +2,9 @@ ingest:
   from: /tmp/images
   to: /tmp/images/tiff
 
-icloudDownloaded:
+icloudDownloader:
   user: username
   password: password
   downloadDirectory: /tmp/images
   dockerImage: true
+
