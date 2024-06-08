@@ -11,31 +11,13 @@ public class MetadataDocument {
     private String id;
     private Integer imageWidth;
     private Integer imageLength;
-    private String urlThumbnail;
-    private String urlOriginal;
-    private String urlLargeSize;
-    private String urlMediumSize;
-    private String urlSmallSize;
+    private String urlThumbnail = "";
+    private String urlOriginal = "";
+    private String urlLargeSize = "";
+    private String urlMediumSize = "";
+    private String urlSmallSize = "";
 
     public MetadataDocument(){
-    }
-
-    public MetadataDocument(String id, Integer imageWidth, Integer imageLength) {
-        this.id = id;
-        this.imageWidth = imageWidth;
-        this.imageLength = imageLength;
-    }
-
-    public MetadataDocument(String id, Integer imageWidth, Integer imageLength, String urlThumbnail, String urlOriginal,
-                            String urlLargeSize, String urlMediumSize, String urlSmallSize) {
-        this.id = id;
-        this.imageWidth = imageWidth;
-        this.imageLength = imageLength;
-        this.urlThumbnail = urlThumbnail;
-        this.urlOriginal = urlOriginal;
-        this.urlLargeSize = urlLargeSize;
-        this.urlMediumSize = urlMediumSize;
-        this.urlSmallSize = urlSmallSize;
     }
 
     public String getId() {

@@ -46,8 +46,11 @@ public class EmbeddedSolrTest {
     }
 
     @Test
-    public void addingDocumentFromPOJO() throws IOException, SolrServerException {
-        MetadataDocument document = new MetadataDocument("testId", 400, 500);
+    public void addingDocumentFromPOJO() throws IOException {
+        MetadataDocument document = new MetadataDocument();
+        document.setId("testId");
+        document.setImageWidth(400);
+        document.setImageLength(500);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);

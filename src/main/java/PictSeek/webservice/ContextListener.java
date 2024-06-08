@@ -26,7 +26,6 @@ public class ContextListener implements ServletContextListener {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     public static final String LOGBACK_ENV = "java:/comp/env/PictSeek-logback-config";
-    public static final String CONFIG_ENV = "java:/comp/env/application-config";
 
     /**
      * On context initialisation this

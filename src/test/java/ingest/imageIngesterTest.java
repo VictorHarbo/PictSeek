@@ -16,7 +16,7 @@ public class imageIngesterTest {
     }
 
     //@Test
-    public void testIngester() throws IOException, InterruptedException {
+    public void testIngester() throws IOException {
         ImageIngester.ingest();
     }
 }
