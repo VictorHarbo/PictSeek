@@ -1,6 +1,6 @@
 package ingest;
 
-import PictSeek.ingest.imageIngester;
+import PictSeek.ingest.ImageIngester;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,6 @@ public class imageIngesterTest {
 
     //@Test
     public void testIngester() throws IOException, InterruptedException {
-        imageIngester.ingest();
+        ImageIngester.ingest();
     }
 }

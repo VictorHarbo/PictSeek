@@ -1,9 +1,11 @@
 package PictSeek.api.v1.impl;
 
 import PictSeek.api.v1.*;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 
-import PictSeek.ingest.imageIngester;
+import PictSeek.ingest.ImageIngester;
 import dk.kb.util.webservice.exception.ServiceException;
 
 import org.slf4j.Logger;
@@ -48,6 +50,16 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
     
     }
 
+    @Override
+    public String deletePhotos() {
+        try {
+            ImageIngester.deleteTemporaryFiles();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "Deleted photos";
+    }
+
 
     /**
      * Ingest images from iCloud
@@ -68,10 +80,10 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
       * @implNote return will always produce a HTTP 200 code. Throw ServiceException if you need to return other codes
      */
     @Override
-    public String ingestIcloud() throws ServiceException {
+    public String ingest() throws ServiceException {
         try {
             log.info("Starting ingester");
-            String result = imageIngester.ingest();
+            String result = ImageIngester.ingest();
         return result;
         } catch (Exception e){
             throw handleException(e);

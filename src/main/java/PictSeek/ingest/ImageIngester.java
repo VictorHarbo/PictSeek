@@ -16,8 +16,8 @@ import java.util.stream.Stream;
  * Ingest images of supported type into the backing IIPImage server. The images are converted to tiff and ingested.
  * When the images have been ingested to the server, all content in the ingest directory is deleted.
  */
-public class imageIngester {
-    private static Logger log = LoggerFactory.getLogger(imageIngester.class);
+public class ImageIngester {
+    private static Logger log = LoggerFactory.getLogger(ImageIngester.class);
     private static final String INGEST_FROM = ServiceConfig.getIngestFrom();
 
     private static ImageType imageType;
@@ -40,7 +40,7 @@ public class imageIngester {
         convertToTIFF();
 
         // TODO: Add support for deleting from temporary HEIC/PNG folder
-        deleteTemporaryFiles();
+        //deleteTemporaryFiles();
 
         return "Success";
     }
@@ -54,8 +54,8 @@ public class imageIngester {
 
         try (Stream<Path> stream = Files.walk(dir)) {
             stream.filter(Files::isRegularFile)
-                    .filter(imageIngester::checkExtension)
-                    .forEach(imageIngester::createTiffWithVIPS);
+                    .filter(ImageIngester::checkExtension)
+                    .forEach(ImageIngester::createTiffWithVIPS);
         }
     }
 
@@ -109,7 +109,7 @@ public class imageIngester {
 
         // Get a stream of paths in the directory
         try (Stream<Path> files = Files.list(directory)) {
-            files.forEach(imageIngester::deleteFile);
+            files.forEach(ImageIngester::deleteFile);
         }
     }
 

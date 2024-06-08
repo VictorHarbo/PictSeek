@@ -15,17 +15,33 @@ servers:
     description: 'Version 1'
 
 paths:
-  /ingest/icloud:
+  /ingest:
     get:
       tags:
         - PictSeek
-      summary: Ingest images from iCloud
+      summary: Ingest images from folder
       # TODO: Better description
-      description: Ingest images from iCloud for a specific user.
-      operationId: ingestIcloud
+      description: Ingest images from configured ingest folder
+      operationId: ingest
       responses:
         '200':
-          description: Ingest from iCloud was a success.
+          description: Ingest was a success.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Success
+
+  /deleteRawPhotos:
+    get:
+      tags:
+        - PictSeek
+      summary: Delete all raw photos
+      description: Delete all photos from the ingestFrom directory. This endpoint should be used with caution.
+      operationId: deletePhotos
+      responses:
+        '200':
+          description: Raw photos were deleted
           content:
             text/plain:
               schema:
