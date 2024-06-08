@@ -3,3 +3,4 @@ icloudIngester:
   password: password
   downloadDirectory: /tmp/images
   tiffDirectory: /tmp/images/tiff
+  dockerImage: true

@@ -1,6 +1,7 @@
 package PictSeek.ingest;
 
 import PictSeek.config.ServiceConfig;
+import PictSeek.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,9 +36,11 @@ public class IcloudIngester {
      * @return A string with the text "Success" to indicate that the process has finished correctly.
      */
     public static String ingest() throws IOException, InterruptedException {
-        //downloadFromICloud();
+        downloadFromICloud();
 
         convertToTIFF();
+
+
 
         // TODO: Add support for deleting from temporary HEIC/PNG folder
 
@@ -92,10 +95,20 @@ public class IcloudIngester {
 
         String[] vipsCommand = getVipsCommand(inputImagePath, tiffPath);
 
-        Runtime rt = Runtime.getRuntime();
+        // Create a new process builder
+        ProcessBuilder processBuilder = new ProcessBuilder(vipsCommand);
+
         try {
-            Process pr = rt.exec(vipsCommand);
-            pr.waitFor();
+            // Start the process
+            Process process = processBuilder.start();
+
+            // Create threads to handle the process' output and error streams
+            new Thread(() -> Util.logStream(process.getInputStream())).start();
+            new Thread(() -> Util.logStream(process.getErrorStream())).start();
+
+            // Wait for the process to complete
+            int exitCode = process.waitFor();
+            log.debug("VIPS Process exited with code: " + exitCode);
 
         } catch (IOException | InterruptedException e) {
             log.warn("An error occurred when trying to create .tiff from image: ''{}", inputImagePath);
@@ -120,9 +133,18 @@ public class IcloudIngester {
         String folderStructureArg = "--folder-structure";
         String folderStructureInput = "none";
 
-        String[] completeCommand = {icloudDownloader, "--directory", absoluteImageFolder, "--username", userInput,
-                "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
-                folderStructureInput};
+        String[] completeCommand;
+        if (ServiceConfig.ICloudDownloaderIsDocker()){
+            completeCommand = new String[]{"docker", "run", "--it", "--rm", "icloudpd/icloudpd:latest", icloudDownloader, "--directory", absoluteImageFolder, "--username", userInput,
+                    "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
+                    folderStructureInput};
+        } else {
+            completeCommand = new String[]{icloudDownloader, "--directory", absoluteImageFolder, "--username", userInput,
+                    "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
+                    folderStructureInput};
+        }
+
+
 
         log.debug("Created the iCloud Downloader command from the following arguments: '{}'",
                 Arrays.toString(completeCommand));
@@ -144,13 +166,15 @@ public class IcloudIngester {
             vipsCommand = new String[]{"vips", "im_vips2tiff", inputImagePath.toString(), tiffWithArguments};
         } else if (imageType.equals(ImageType.HEIC)) {
             // Convert HEIC (Apple images) to TIFF.
-            vipsCommand = new String[]{"vips", "heifload", inputImagePath.toString(), tiffPath};
+            vipsCommand = new String[]{"vips", "tiffsave", inputImagePath.toString(), tiffPath,
+                    "--tile",  "--pyramid", "--compression=jpeg", "--tile-width=256", "--tile-height=256"};
         }
 
         if (vipsCommand == null){
             throw new RuntimeException("Error converting input image to .tiff as the format of the file isn't supported " +
                     "by the application, yet.");
         }
+        log.debug("Using VIPS command: '{}'", Arrays.toString(vipsCommand));
         return vipsCommand;
     }
 

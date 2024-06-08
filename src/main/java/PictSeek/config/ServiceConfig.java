@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class ServiceConfig {
     private static final Logger log = LoggerFactory.getLogger(ServiceConfig.class);
@@ -41,5 +42,8 @@ public class ServiceConfig {
 
     public static String getTiffDirectory(){
         return (String) serviceConfig.get("icloudIngester.tiffDirectory");
+    }
+    public static boolean ICloudDownloaderIsDocker() {
+        return serviceConfig.getBoolean("icloudIngester.dockerImage", true);
     }
 }
