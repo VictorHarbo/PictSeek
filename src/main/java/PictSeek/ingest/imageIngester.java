@@ -13,10 +13,11 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 /**
- * A Java wrapper for the excellent <a href="https://github.com/icloud-photos-downloader/icloud_photos_downloader">iCloud Photos Downloader</a>.
+ * Ingest images of supported type into the backing IIPImage server. The images are converted to tiff and ingested.
+ * When the images have been ingested to the server, all content in the ingest directory is deleted.
  */
-public class IcloudIngester {
-    private static Logger log = LoggerFactory.getLogger(IcloudIngester.class);
+public class imageIngester {
+    private static Logger log = LoggerFactory.getLogger(imageIngester.class);
     private static final String absoluteImageFolder = ServiceConfig.getIcloudDownloadDirectory();
 
     private static ImageType imageType;
@@ -36,13 +37,12 @@ public class IcloudIngester {
      * @return A string with the text "Success" to indicate that the process has finished correctly.
      */
     public static String ingest() throws IOException, InterruptedException {
-        downloadFromICloud();
+        //downloadFromICloud();
 
         convertToTIFF();
 
-
-
         // TODO: Add support for deleting from temporary HEIC/PNG folder
+        deleteTemporaryFiles();
 
         return "Success";
     }
@@ -74,8 +74,8 @@ public class IcloudIngester {
 
         try (Stream<Path> stream = Files.walk(dir)) {
             stream.filter(Files::isRegularFile)
-                    .filter(IcloudIngester::checkExtension)
-                    .forEach(IcloudIngester::createTiffWithVIPS);
+                    .filter(imageIngester::checkExtension)
+                    .forEach(imageIngester::createTiffWithVIPS);
         }
     }
 
@@ -108,11 +108,39 @@ public class IcloudIngester {
 
             // Wait for the process to complete
             int exitCode = process.waitFor();
-            log.debug("VIPS Process exited with code: " + exitCode);
+
+            if (exitCode != 0){
+                log.warn("VIPS Process exited with code: " + exitCode);
+            }
 
         } catch (IOException | InterruptedException e) {
             log.warn("An error occurred when trying to create .tiff from image: ''{}", inputImagePath);
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteTemporaryFiles() throws IOException {
+        Path directory = Path.of(ServiceConfig.getIcloudDownloadDirectory());
+
+        // Ensure the path is a directory
+        if (!Files.isDirectory(directory)) {
+            throw new IllegalArgumentException("Provided path is not a directory: " + directory);
+        }
+
+        // Get a stream of paths in the directory
+        try (Stream<Path> files = Files.list(directory)) {
+            files.forEach(imageIngester::deleteFile);
+        }
+    }
+
+    private static void deleteFile(Path file) {
+        try {
+            // Delete each file
+            if (Files.isRegularFile(file)) {
+                Files.delete(file);
+            }
+        } catch (IOException e) {
+            log.warn("Failed to delete file: " + file + " - " + e.getMessage());
         }
     }
 
@@ -135,7 +163,10 @@ public class IcloudIngester {
 
         String[] completeCommand;
         if (ServiceConfig.ICloudDownloaderIsDocker()){
-            completeCommand = new String[]{"docker", "run", "--it", "--rm", "icloudpd/icloudpd:latest", icloudDownloader, "--directory", absoluteImageFolder, "--username", userInput,
+            String dockerVolume = "/downloadedImages";
+            // docker run -i -v /home/admin/downloadedImages:/downloadedImages icloudpd/icloudpd:latest icloudpd --directory /downloadedImages --username vholesen@hotmail.com --password KarlMarx2023 --recent 10 --skip-videos --folder-structure none
+
+            completeCommand = new String[]{"docker", "run", "-i", "-v", absoluteImageFolder+":"+dockerVolume, "icloudpd/icloudpd:latest", icloudDownloader, "--directory", dockerVolume, "--username", userInput,
                     "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
                     folderStructureInput};
         } else {
