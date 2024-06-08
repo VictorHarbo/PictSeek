@@ -9,7 +9,11 @@
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
   <field name="imageWidth" type="pint"/>
   <field name="imageLength" type="pint"/>
-  <field name="url" type="string"/>
+  <field name="urlThumbnail" type="string"/>
+  <field name="urlOriginal" type="string"/>
+  <field name="urlLargeSize" type="string"/>
+  <field name="urlMediumSize" type="string"/>
+  <field name="urlSmallSize" type="string"/>
 
   <fieldType name="_nest_path_" class="solr.NestPathField" omitTermFreqAndPositions="true" omitNorms="true" maxCharsForDocValues="-1" stored="false" multiValued="false"/>
   <fieldType name="ancestor_path" class="solr.TextField">

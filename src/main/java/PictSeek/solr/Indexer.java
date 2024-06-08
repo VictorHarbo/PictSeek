@@ -48,6 +48,11 @@ public class Indexer {
         solrDoc.addField("id", doc.getId());
         solrDoc.addField("imageWidth", doc.getImageWidth());
         solrDoc.addField("imageLength", doc.getImageLength());
+        solrDoc.addField("urlThumbnail", doc.getUrlThumbnail());
+        solrDoc.addField("urlOriginal", doc.getUrlOriginal());
+        solrDoc.addField("urlLargeSize", doc.getUrlLargeSize());
+        solrDoc.addField("urlMediumSize", doc.getUrlMediumSize());
+        solrDoc.addField("urlSmallSize", doc.getUrlSmallSize());
 
         try {
             final UpdateResponse updateResponse = client.add(COLLECTION, solrDoc);
