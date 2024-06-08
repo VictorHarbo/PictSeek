@@ -42,4 +42,7 @@ public class ServiceConfig {
     public static String getSolrCollection(){
         return (String) serviceConfig.get("solr.collection");
     }
+    public static String getImageserver(){
+        return serviceConfig.getString("imageserver");
+    }
 }
