@@ -1,18 +1,22 @@
 package PictSeek;
 
 import PictSeek.metadata.ExifHandler;
-import PictSeek.metadata.SolrDocument;
+import PictSeek.metadata.MetadataDocument;
 
 import java.io.IOException;
 
 public class Facade {
+    public static MetadataDocument createSolrDocumentForImage(String imagePath)  {
+        String id = MetadataDocument.createId();
+        int imageLength;
+        int imageWidth;
+        try {
+            imageLength = ExifHandler.getImageLength(imagePath);
+            imageWidth = ExifHandler.getImageWidth(imagePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-    public static SolrDocument createSolrDocumentForImage(String imagePath) throws IOException {
-        String id = SolrDocument.createId();
-        Integer imageLength = ExifHandler.getImageLength(imagePath);
-        Integer imageWidth = ExifHandler.getImageWidth(imagePath);
-
-
-        return new SolrDocument(id, imageWidth, imageLength);
+        return new MetadataDocument(id, imageWidth, imageLength );
     }
 }

@@ -1,4 +1,4 @@
-import PictSeek.metadata.SolrDocument;
+import PictSeek.metadata.MetadataDocument;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,7 +47,7 @@ public class EmbeddedSolrTest {
 
     @Test
     public void addingDocumentFromPOJO() throws IOException, SolrServerException {
-        SolrDocument document = new SolrDocument("testId", 400, 500);
+        MetadataDocument document = new MetadataDocument("testId", 400, 500);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);

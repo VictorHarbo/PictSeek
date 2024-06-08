@@ -5,14 +5,14 @@ import java.util.UUID;
 /**
  * This class represents the JSON solr documents indexed into solr.
  */
-public class SolrDocument {
+public class MetadataDocument {
 
 
     private String id;
     private Integer imageWidth;
     private Integer imageLength;
 
-    public SolrDocument(String id, Integer imageWidth, Integer imageLength) {
+    public MetadataDocument(String id, Integer imageWidth, Integer imageLength) {
         this.id = id;
         this.imageWidth = imageWidth;
         this.imageLength = imageLength;
