@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  */
 public class imageIngester {
     private static Logger log = LoggerFactory.getLogger(imageIngester.class);
-    private static final String absoluteImageFolder = ServiceConfig.getIcloudDownloadDirectory();
+    private static final String INGEST_FROM = ServiceConfig.getIngestFrom();
 
     private static ImageType imageType;
 
@@ -31,14 +31,12 @@ public class imageIngester {
     }
 
     /**
-     * Main method of the iCloud Ingester. This method should be the only public method in the class. 
-     * The job of the iCloud Ingester ,is to download a users images from iCloud and serve them as TIFF files ready for
+     * Main method of the ImageIngester. This method should be the only public method in the class.
+     * The job of the  ImageIngester, is to convert images from input formats and serve them as TIFF files ready for
      * showing through an imageserver supporting TIFFs such as IIPImage. 
      * @return A string with the text "Success" to indicate that the process has finished correctly.
      */
-    public static String ingest() throws IOException, InterruptedException {
-        //downloadFromICloud();
-
+    public static String ingest() throws IOException {
         convertToTIFF();
 
         // TODO: Add support for deleting from temporary HEIC/PNG folder
@@ -48,29 +46,11 @@ public class imageIngester {
     }
 
     /**
-     * Download all images (and only images) from a users iCloud storage.
-     * The user credentials should be configured in the configuration YAML.
-     * Supports single user download.
-     */
-    private static void downloadFromICloud() throws IOException, InterruptedException {
-        // TODO: Implement support for multiple users
-        String user = ServiceConfig.getIcloudUser();
-        String[] completeCommand = getICloudDownloaderCommand();
-
-        log.debug("Starting image ingest from iCloud for user: '{}'.", user);
-        Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec(completeCommand);
-
-        pr.waitFor();
-        log.info("Finished image ingest from iCloud for user: '{}'.", user);
-    }
-
-    /**
-     * Converts all images in the configured input directory to TIFF format and add them to the specified directory
+     * Converts all images in the configured ingest directory to TIFF format and add them to the specified directory
      * for TIFF images, that are to be served by the image server.
      */
     private static void convertToTIFF() throws IOException {
-        Path dir = Paths.get(absoluteImageFolder);
+        Path dir = Paths.get(INGEST_FROM);
 
         try (Stream<Path> stream = Files.walk(dir)) {
             stream.filter(Files::isRegularFile)
@@ -120,7 +100,7 @@ public class imageIngester {
     }
 
     public static void deleteTemporaryFiles() throws IOException {
-        Path directory = Path.of(ServiceConfig.getIcloudDownloadDirectory());
+        Path directory = Path.of(ServiceConfig.getIngestFrom());
 
         // Ensure the path is a directory
         if (!Files.isDirectory(directory)) {
@@ -142,45 +122,6 @@ public class imageIngester {
         } catch (IOException e) {
             log.warn("Failed to delete file: " + file + " - " + e.getMessage());
         }
-    }
-
-    /**
-     * Construct the Command line argument for the iCloud Photos Downloader.
-     * @return a string array containing all elements of the argument ready for use
-     * with the {@link Runtime#exec(String[])}-function.
-     *<p/>
-     * User and password are configured in the configuration files.
-     */
-    private static String[] getICloudDownloaderCommand() {
-        String icloudDownloader = "icloudpd";
-        String userInput = ServiceConfig.getIcloudUser();
-        String passInput = ServiceConfig.getIcloudPass();
-        String recentArg = "--recent";
-        String recentInput = "10";
-        String skipVideos = "--skip-videos";
-        String folderStructureArg = "--folder-structure";
-        String folderStructureInput = "none";
-
-        String[] completeCommand;
-        if (ServiceConfig.ICloudDownloaderIsDocker()){
-            String dockerVolume = "/downloadedImages";
-            // docker run -i -v /home/admin/downloadedImages:/downloadedImages icloudpd/icloudpd:latest icloudpd --directory /downloadedImages --username vholesen@hotmail.com --password KarlMarx2023 --recent 10 --skip-videos --folder-structure none
-
-            completeCommand = new String[]{"docker", "run", "-i", "-v", absoluteImageFolder+":"+dockerVolume, "icloudpd/icloudpd:latest", icloudDownloader, "--directory", dockerVolume, "--username", userInput,
-                    "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
-                    folderStructureInput};
-        } else {
-            completeCommand = new String[]{icloudDownloader, "--directory", absoluteImageFolder, "--username", userInput,
-                    "--password", passInput, recentArg, recentInput, skipVideos, folderStructureArg,
-                    folderStructureInput};
-        }
-
-
-
-        log.debug("Created the iCloud Downloader command from the following arguments: '{}'",
-                Arrays.toString(completeCommand));
-
-        return completeCommand;
     }
 
     /**
@@ -219,7 +160,7 @@ public class imageIngester {
         String originalFilename = inputImagePath.getFileName().toString();
 
         String filenameNoEnding = originalFilename.substring(0, originalFilename.indexOf("."));
-        return ServiceConfig.getTiffDirectory() + "/" + filenameNoEnding + ".tiff";
+        return ServiceConfig.getIngestTo() + "/" + filenameNoEnding + ".tiff";
     }
 
     /**

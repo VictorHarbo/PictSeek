@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
 
 public class ServiceConfig {
     private static final Logger log = LoggerFactory.getLogger(ServiceConfig.class);
@@ -29,21 +27,11 @@ public class ServiceConfig {
         serviceConfig.setExtrapolate(true);
     }
 
-    public static String getIcloudUser(){
-        return (String) serviceConfig.get("icloudIngester.user");
-    }
-    public static String getIcloudPass(){
-        return (String) serviceConfig.get("icloudIngester.password");
-
-    }
-    public static String getIcloudDownloadDirectory(){
-        return (String) serviceConfig.get("icloudIngester.downloadDirectory");
+    public static String getIngestFrom(){
+        return (String) serviceConfig.get("ingest.from");
     }
 
-    public static String getTiffDirectory(){
-        return (String) serviceConfig.get("icloudIngester.tiffDirectory");
-    }
-    public static boolean ICloudDownloaderIsDocker() {
-        return serviceConfig.getBoolean("icloudIngester.dockerImage", true);
+    public static String getIngestTo(){
+        return (String) serviceConfig.get("ingest.to");
     }
 }
