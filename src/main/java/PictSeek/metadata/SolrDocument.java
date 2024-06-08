@@ -9,12 +9,12 @@ public class SolrDocument {
 
 
     private String id;
-    private Integer imageHeight;
+    private Integer imageWidth;
     private Integer imageLength;
 
-    public SolrDocument(String id, Integer imageHeight, Integer imageLength) {
+    public SolrDocument(String id, Integer imageWidth, Integer imageLength) {
         this.id = id;
-        this.imageHeight = imageHeight;
+        this.imageWidth = imageWidth;
         this.imageLength = imageLength;
     }
 
@@ -26,12 +26,12 @@ public class SolrDocument {
         this.id = id;
     }
 
-    public Integer getImageHeight() {
-        return imageHeight;
+    public Integer getImageWidth() {
+        return imageWidth;
     }
 
-    public void setImageHeight(Integer imageHeight) {
-        this.imageHeight = imageHeight;
+    public void setImageWidth(Integer imageWidth) {
+        this.imageWidth = imageWidth;
     }
 
     public Integer getImageLength() {

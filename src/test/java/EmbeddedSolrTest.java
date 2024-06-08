@@ -39,7 +39,7 @@ public class EmbeddedSolrTest {
         SolrInputDocument doc = new SolrInputDocument();
         doc.setField("id", "testId");
         doc.setField("imageLength", 200);
-        doc.setField("imageHeight", 400);
+        doc.setField("imageWidth", 400);
         embeddedServer.add(doc);
 
         embeddedServer.getById("testId");
