@@ -83,21 +83,12 @@
       <filter name="snowballPorter" language="Danish"/>
     </analyzer>
   </fieldType>
-  <fieldType name="text_el" class="solr.TextField" positionIncrementGap="100">
-    <analyzer>
-      <tokenizer name="standard"/>
-      <filter name="greekLowercase"/>
-      <filter words="lang/stopwords_el.txt" ignoreCase="false" name="stop"/>
-      <filter name="greekStem"/>
-    </analyzer>
-  </fieldType>
   <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
     <analyzer type="index">
       <tokenizer name="standard"/>
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter name="lowercase"/>
       <filter name="englishPossessive"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="porterStem"/>
     </analyzer>
     <analyzer type="query">
@@ -106,7 +97,6 @@
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter name="lowercase"/>
       <filter name="englishPossessive"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="porterStem"/>
     </analyzer>
   </fieldType>
@@ -116,7 +106,6 @@
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter generateNumberParts="1" catenateWords="1" catenateNumbers="1" splitOnCaseChange="1" name="wordDelimiterGraph" catenateAll="0" generateWordParts="1"/>
       <filter name="lowercase"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="porterStem"/>
       <filter name="flattenGraph"/>
     </analyzer>
@@ -126,7 +115,6 @@
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter generateNumberParts="1" catenateWords="0" catenateNumbers="0" splitOnCaseChange="1" name="wordDelimiterGraph" catenateAll="0" generateWordParts="1"/>
       <filter name="lowercase"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="porterStem"/>
     </analyzer>
   </fieldType>
@@ -137,7 +125,6 @@
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter catenateWords="1" catenateNumbers="1" generateWordParts="0" catenateAll="0" generateNumberParts="0" name="wordDelimiterGraph"/>
       <filter name="lowercase"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="englishMinimalStem"/>
       <filter name="removeDuplicates"/>
       <filter name="flattenGraph"/>
@@ -148,7 +135,6 @@
       <filter words="lang/stopwords_en.txt" ignoreCase="true" name="stop"/>
       <filter catenateWords="1" catenateNumbers="1" generateWordParts="0" catenateAll="0" generateNumberParts="0" name="wordDelimiterGraph"/>
       <filter name="lowercase"/>
-      <filter name="keywordMarker" protected="protwords.txt"/>
       <filter name="englishMinimalStem"/>
       <filter name="removeDuplicates"/>
     </analyzer>
