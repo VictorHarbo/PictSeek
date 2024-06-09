@@ -181,6 +181,14 @@
             <version>1.0.0-alpha5</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis -->
+        <!-- Azure AI is used for describing images. -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-ai-vision-imageanalysis</artifactId>
+            <version>1.0.0-beta.2</version>
+        </dependency>
+
 
         <!-- Enmbedded solr for unittest -->
         <dependency>
