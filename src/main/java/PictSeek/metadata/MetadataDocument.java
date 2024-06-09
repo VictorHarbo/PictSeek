@@ -11,6 +11,8 @@ public class MetadataDocument {
     private String id;
     private Integer imageWidth;
     private Integer imageLength;
+
+    private String description = "";
     private String urlThumbnail = "";
     private String urlOriginal = "";
     private String urlLargeSize = "";
@@ -87,5 +89,13 @@ public class MetadataDocument {
     public static String createId(){
         UUID id = UUID.randomUUID();
         return id.toString();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

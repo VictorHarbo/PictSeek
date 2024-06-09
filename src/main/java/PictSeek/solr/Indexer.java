@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.apache.solr.cli.SolrCLI.getSolrClient;
@@ -23,7 +25,7 @@ public class Indexer {
 
     private static final String SOLR_URL = ServiceConfig.getSolrUrl();
     private static final String COLLECTION = ServiceConfig.getSolrCollection();
-
+    private final static SolrClient client = getSolrClient(SOLR_URL);
 
     public static void indexPhotosFromDirectory() throws IOException {
         Path directory = Path.of(ServiceConfig.getIngestTo());
@@ -41,9 +43,6 @@ public class Indexer {
         }
     }
     public static void index(MetadataDocument doc) {
-
-        final SolrClient client = getSolrClient(SOLR_URL);
-
         final SolrInputDocument solrDoc = new SolrInputDocument();
         solrDoc.addField("id", doc.getId());
         solrDoc.addField("imageWidth", doc.getImageWidth());
@@ -53,14 +52,34 @@ public class Indexer {
         solrDoc.addField("urlLargeSize", doc.getUrlLargeSize());
         solrDoc.addField("urlMediumSize", doc.getUrlMediumSize());
         solrDoc.addField("urlSmallSize", doc.getUrlSmallSize());
+        solrDoc.addField("description", doc.getDescription());
 
         try {
             final UpdateResponse updateResponse = client.add(COLLECTION, solrDoc);
             // Indexed documents must be committed
             client.commit(COLLECTION);
         } catch (SolrServerException | IOException e) {
-            log.warn("Error occurred when adding and committing solr document to solr. Client URL is: '{}'", client.getContext().toString());
+            log.warn("Error occurred when adding and committing solr document to solr.");
             throw new RuntimeException(e);
         }
+    }
+
+    public static void updateDescription(String id, String descriptionValue){
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField("id", id); // Specify the ID of the document to update
+
+        // Atomic update: increment a field
+        Map<String, String> incrementOperation = new HashMap<>();
+        incrementOperation.put("set", descriptionValue);
+        doc.addField("description", incrementOperation);
+
+        try {
+            client.add(COLLECTION, doc);
+            client.commit(COLLECTION);
+        } catch (SolrServerException | IOException e) {
+            log.warn("Error occurred when updating description for document with ID: '{}'.", id);
+            throw new RuntimeException(e);
+        }
+
     }
 }
