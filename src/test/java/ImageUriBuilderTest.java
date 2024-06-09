@@ -1,4 +1,4 @@
-import PictSeek.ImageUrlBuilder;
+import PictSeek.metadata.ImageUrlBuilder;
 import PictSeek.config.ServiceConfig;
 import org.apache.http.client.utils.URIBuilder;
 import org.junit.jupiter.api.BeforeAll;

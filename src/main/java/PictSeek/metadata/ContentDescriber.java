@@ -9,9 +9,21 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Describe content in images through the Microsoft Azure Vision AI.
+ */
 public class ContentDescriber {
     private static Logger log = LoggerFactory.getLogger(ContentDescriber.class);
 
+    /**
+     * Create a description for each image in the solr index not containing a description.
+     * This is done in three steps:
+     *  <ol>
+     *      <li>Query solr for images with description = ""</li>
+     *      <li>For each image call the Azure Vision API</li>
+     *      <li>Add the updated description to the document in solr</li>
+     *  </ol>
+     */
     public static void createDescriptionForImages(){
         //TODO: Query solr for images without description through solr.Querier and get URL to image in small or medium size.
         // Store ID for updating later.

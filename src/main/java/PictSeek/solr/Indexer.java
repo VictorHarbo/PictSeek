@@ -20,13 +20,28 @@ import java.util.stream.Stream;
 
 import static org.apache.solr.cli.SolrCLI.getSolrClient;
 
+/**
+ * Class containing methods to index to solr.
+ */
 public class Indexer {
     private static Logger log = LoggerFactory.getLogger(Indexer.class);
 
+    /**
+     * Base URL for solr.
+     */
     private static final String SOLR_URL = ServiceConfig.getSolrUrl();
     private static final String COLLECTION = ServiceConfig.getSolrCollection();
+
+    /**
+     * Solr client for the base url.
+     */
     private final static SolrClient client = getSolrClient(SOLR_URL);
 
+    /**
+     * Image specific indexing method.
+     * Takes all files from the path specified in the configuration as ingest.to and creates SolrDocuments for these
+     * images. Then indexes all to solr.
+     */
     public static void indexPhotosFromDirectory() throws IOException {
         Path directory = Path.of(ServiceConfig.getIngestTo());
 
@@ -42,6 +57,11 @@ public class Indexer {
                 .forEach(Indexer::index);
         }
     }
+
+    /**
+     * Create a {@link SolrInputDocument} from the input {@link MetadataDocument}
+     * @param doc containing values that are to be added to solr.
+     */
     public static void index(MetadataDocument doc) {
         final SolrInputDocument solrDoc = new SolrInputDocument();
         solrDoc.addField("id", doc.getId());
@@ -64,6 +84,11 @@ public class Indexer {
         }
     }
 
+    /**
+     * Update the description field for a single record in solr.
+     * @param id of the document to update.
+     * @param descriptionValue the new value for the description field.
+     */
     public static void updateDescription(String id, String descriptionValue){
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField("id", id); // Specify the ID of the document to update

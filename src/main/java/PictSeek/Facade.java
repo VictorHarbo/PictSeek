@@ -1,6 +1,7 @@
 package PictSeek;
 
 import PictSeek.metadata.ExifHandler;
+import PictSeek.metadata.ImageUrlBuilder;
 import PictSeek.metadata.MetadataDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,11 @@ import java.net.URISyntaxException;
 public class Facade {
     private static Logger log = LoggerFactory.getLogger(Facade.class);
 
+    /**
+     * Create a {@link MetadataDocument} for an image, which acts as a wrapper or medium for a SolrIndexDocument.
+     * @param imagePath to image.
+     * @return an object containing all values to index for the input image.
+     */
     public static MetadataDocument createSolrDocumentForImage(String imagePath)  {
         MetadataDocument doc = new MetadataDocument();
 

@@ -4,9 +4,9 @@ import java.util.UUID;
 
 /**
  * This class represents the JSON solr documents indexed into solr.
+ * This is an Object which is primarily populated by the {@link PictSeek.Facade#createSolrDocumentForImage(String)}-method.
  */
 public class MetadataDocument {
-
 
     private String id;
     private Integer imageWidth;
@@ -86,6 +86,11 @@ public class MetadataDocument {
         this.urlSmallSize = urlSmallSize;
     }
 
+
+    /**
+     * Create a random UUID.
+     * @return String representation of a UUID.
+     */
     public static String createId(){
         UUID id = UUID.randomUUID();
         return id.toString();
