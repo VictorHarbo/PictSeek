@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import PictSeek.ingest.ImageIngester;
+import PictSeek.metadata.ContentDescriber;
 import PictSeek.solr.Indexer;
 import dk.kb.util.webservice.exception.ServiceException;
 
@@ -39,12 +40,9 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
      */
     @Override
     public String createContentDescriptions() throws ServiceException {
-        // TODO: Implement...
-    
-        
-        try { 
-            String response = "yiY9zQ";
-        return response;
+        try {
+            ContentDescriber.createDescriptionForImages();
+        return "Success";
         } catch (Exception e){
             throw handleException(e);
         }
@@ -64,12 +62,6 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
 
     /**
      * Ingest images from iCloud
-     * 
-     * @param user: 
-     * 
-     * @param password: 
-     * 
-     * @param ingestType: 
      * 
      * @return <ul>
       *   <li>code = 200, message = "Ingest from iCloud was a success.", response = String.class</li>

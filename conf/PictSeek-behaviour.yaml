@@ -13,3 +13,7 @@ solr:
   collection: collectionName
 
 imageserver: IIPImage.com/imageserver
+
+azure:
+  endpoint: computervision.endpoint.com
+  key: hereShouldBeAValidKey

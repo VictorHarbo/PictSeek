@@ -45,4 +45,12 @@ public class ServiceConfig {
     public static String getImageserver(){
         return serviceConfig.getString("imageserver");
     }
+
+    public static String getAzureEndpoint(){
+        return serviceConfig.getString("azure.endpoint");
+    }
+
+    public static String getAzureKey(){
+        return serviceConfig.getString("azure.key");
+    }
 }
