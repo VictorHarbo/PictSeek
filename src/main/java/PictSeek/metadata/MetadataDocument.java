@@ -12,7 +12,7 @@ public class MetadataDocument {
     private Integer imageWidth;
     private Integer imageLength;
 
-    private String description = "";
+    private String description = "EMPTY";
     private String urlThumbnail = "";
     private String urlOriginal = "";
     private String urlLargeSize = "";
