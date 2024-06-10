@@ -62,8 +62,24 @@ public class ContentDescriber {
             throw new RuntimeException(e);
         }
 
+        try {
+            log.debug("Image Inputstream has '{}' bytes available.", image.available());
+
+            if (image.available() == 0){
+                log.warn("Image Inputstream seems empty. Loading of image might have failed.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         // Query AZURE VISION for a description for the image.
         ImageAnalysisResult result = analyzeImageFromMemory(image);
+
+        if (result.getCaption().getText().isEmpty()){
+            log.warn("Analysis of image has completed with an empty caption.");
+
+        }
 
         // Update description in solr through solr.Indexer
         Indexer.updateDescription(id, result.getCaption().getText());
@@ -72,6 +88,7 @@ public class ContentDescriber {
     }
 
     private static InputStream loadImageFromServer(String urlString) throws IOException {
+        log.debug("Loading image from URL: '{}'.", urlString);
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
         return conn.getInputStream();
