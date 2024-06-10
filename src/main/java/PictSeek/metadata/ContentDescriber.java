@@ -7,7 +7,6 @@ import com.azure.ai.vision.imageanalysis.*;
 import com.azure.ai.vision.imageanalysis.models.*;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import io.swagger.models.auth.In;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -29,7 +27,7 @@ public class ContentDescriber {
     private static final String endpoint = ServiceConfig.getAzureEndpoint();
     private static final String key = ServiceConfig.getAzureKey();
 
-    private static final ImageAnalysisClient client = getImageAnalysisClient(endpoint, key);
+    public static final ImageAnalysisClient client = getImageAnalysisClient(endpoint, key);
 
 
     /**
@@ -49,30 +47,27 @@ public class ContentDescriber {
 
         //TODO: Handle all methods below in the same .forEach streaming step.
         documents.forEach(ContentDescriber::createDescription);
+
+        log.info("Updated records in the index");
     }
 
     private static void createDescription(SolrDocument doc) {
         String id = (String) doc.get("id");
+        log.debug("Creating description for record with ID: '{}'", id);
         // Load image from url into memory.
-        InputStream image;
+        byte[] image;
         try {
             image = loadImageFromServer((String) doc.get("urlMediumSize"));
         } catch (IOException e) {
-            log.warn("Could not load image from image server.");
-            throw new RuntimeException(e);
+            // Skip Image if it cant be loaded from server.
+            log.warn("Could not load image from image server. Skipping");
+            return;
         }
 
-        try {
-            log.debug("Image Inputstream has '{}' bytes available.", image.available());
-
-            if (image.available() == 0){
-                log.warn("Image Inputstream seems empty. Loading of image might have failed.");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (image == null || image.length == 0){
+            log.error("Image has no value. Skipping");
+            return;
         }
-
-
         // Query AZURE VISION for a description for the image.
         ImageAnalysisResult result = analyzeImageFromMemory(image);
 
@@ -85,21 +80,31 @@ public class ContentDescriber {
         Indexer.updateDescription(id, result.getCaption().getText());
 
         //TODO: Add a tags field to solr and update it here.
+
     }
 
-    private static InputStream loadImageFromServer(String urlString) throws IOException {
+    public static byte[] loadImageFromServer(String urlString) throws IOException {
         log.debug("Loading image from URL: '{}'.", urlString);
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
-        return conn.getInputStream();
+        return conn.getInputStream().readAllBytes();
     }
 
-    public static ImageAnalysisResult analyzeImageFromMemory(InputStream image){
-        BinaryData imageBinary = BinaryData.fromStream(image);
+    public static ImageAnalysisResult analyzeImageFromMemory(byte[] image) {
+        if (endpoint == null || key == null) {
+            log.warn("Missing environment variable 'VISION_ENDPOINT' or 'VISION_KEY'.");
+        }
+
+        if (image == null){
+            log.warn("IMAGE IS NULL");
+            throw new RuntimeException("Image is null. It cant be analyzed");
+        }
+
+        BinaryData imageBinary = BinaryData.fromBytes(image);
+
         return client.analyze(imageBinary,
                 Arrays.asList(VisualFeatures.CAPTION, VisualFeatures.OBJECTS),
                 new ImageAnalysisOptions().setGenderNeutralCaption(true));
-
     }
 
 
