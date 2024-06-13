@@ -18,7 +18,7 @@ const App = () => {
   return (
       <div className="App">
         <header className="App-header">
-          <h1>Solr Search App</h1>
+          <h1>PictSeek Archive</h1>
           <input
               type="text"
               value={query}
@@ -30,8 +30,9 @@ const App = () => {
         <div className="results-grid">
           {results.map((result) => (
               <div key={result.id} className="result-item">
-                <h3>{result.description}</h3>
-                <img src={result.url} alt={result.description} />
+                  <h3>{result.id}</h3>
+                  <img src={result.urlSmallSize} alt="Missing URL"/> <br/>
+                  {result.description}
               </div>
           ))}
         </div>
