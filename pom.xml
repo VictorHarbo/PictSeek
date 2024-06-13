@@ -270,6 +270,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>9.0.89</version>
+        </dependency>
+
 
     </dependencies>
 
