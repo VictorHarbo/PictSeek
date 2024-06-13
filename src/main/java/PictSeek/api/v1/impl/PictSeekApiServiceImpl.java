@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 import PictSeek.ingest.ImageIngester;
 import PictSeek.metadata.ContentDescriber;
 import PictSeek.solr.Indexer;
+import PictSeek.solr.Querier;
 import dk.kb.util.webservice.exception.ServiceException;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,6 +109,15 @@ public class PictSeekApiServiceImpl extends ImplBase implements PictSeekApi {
             throw handleException(e);
         }
     
+    }
+
+    @Override
+    public String solrQuery(String q) {
+        try {
+            return Querier.select(q);
+        } catch (Exception e) {
+            throw handleException(e);
+        }
     }
 
 

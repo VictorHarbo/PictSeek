@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.stream.Stream;
 
 import static org.apache.solr.cli.SolrCLI.getSolrClient;
@@ -23,6 +24,16 @@ public class Querier {
     private static Logger log = LoggerFactory.getLogger(Querier.class);
 
     final static SolrClient solrClient = getSolrClient(ServiceConfig.getSolrUrl());
+    private static final String COLLECTION = ServiceConfig.getSolrCollection();
+
+
+    public static String select(String query) throws SolrServerException, IOException {
+        SolrQuery solrQuery = new SolrQuery(query);
+
+        QueryResponse response = solrClient.query(COLLECTION, solrQuery);
+
+        return response.jsonStr();
+    }
 
     /**
      * Get count of documents in solr.
@@ -33,7 +44,7 @@ public class Querier {
         SolrQuery query = new SolrQuery();
         query.setQuery("*:*"); // Query all documents
 
-        QueryResponse response = solrClient.query(ServiceConfig.getSolrCollection(), query);
+        QueryResponse response = solrClient.query(COLLECTION, query);
 
         SolrDocumentList documents = response.getResults();
 

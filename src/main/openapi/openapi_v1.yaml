@@ -64,6 +64,25 @@ paths:
                 type: string
                 example: Success
 
+  /solr/query:
+    get:
+      tags:
+        - PictSeek
+      summary: Query the service
+      description: Simple query against solr
+      operationId: solrQuery
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+      responses:
+        '200':
+          description: succesfully queried solr.
+          content:
+            application/json:
+              schema:
+                type: string
   /solr/index:
     get:
       tags:
