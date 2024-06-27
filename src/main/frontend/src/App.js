@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Create this file for ChatGPT-like colors
+import './App.css';
+import ImageGrid from "./components/ImageGrid"; // Create this file for ChatGPT-like colors
 
 const App = () => {
   const [query, setQuery] = useState('');
@@ -17,25 +18,22 @@ const App = () => {
 
   return (
       <div className="App">
-        <header className="App-header">
-          <h1>PictSeek Archive</h1>
-          <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Enter search term..."
-          />
-          <button onClick={handleSearch}>Search</button>
-        </header>
-        <div className="results-grid">
-          {results.map((result) => (
-              <div key={result.id} className="result-item">
-                  <h3>{result.id}</h3>
-                  <img src={result.urlSmallSize} alt="Missing URL"/> <br/>
-                  {result.description}
-              </div>
-          ))}
-        </div>
+          <header className="App-header">
+              <h1>PictSeek Archive</h1>
+              <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Enter search term..."
+              />
+              <button onClick={handleSearch}>Search</button>
+          </header>
+
+          <div>
+              <h1>Responsive Image Grid</h1>
+              <ImageGrid images={results}/>
+          </div>
+
       </div>
   );
 };
