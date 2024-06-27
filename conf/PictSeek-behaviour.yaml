@@ -17,3 +17,8 @@ imageserver: IIPImage.com/imageserver
 azure:
   endpoint: computervision.endpoint.com
   key: hereShouldBeAValidKey
+
+database:
+  url: jdbc:postgresql://server:5432/db
+  user: user
+  password: password

@@ -53,4 +53,15 @@ public class ServiceConfig {
     public static String getAzureKey(){
         return serviceConfig.getString("azure.key");
     }
+
+    public static String getDbUrl(){
+        return serviceConfig.getString("database.url");
+    }
+    public static String getDbUser(){
+        return serviceConfig.getString("database.user");
+    }
+    public static String getDbPassword(){
+        return serviceConfig.getString("database.password");
+
+    }
 }
